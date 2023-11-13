@@ -1,4 +1,5 @@
 # pymavlink
+
 > 使用python连接并且控制无人机的调研与测试
 
 ## DroneKit
@@ -12,6 +13,10 @@
     - 无人机的状态打印
     - 修改无人机参数
     - 添加监听回调函数
+
+### 参考连接
+
+- [dronekit-doc](https://dronekit-python.readthedocs.io/en/latest/)
 
 ## pymavlink
 
