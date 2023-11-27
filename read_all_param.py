@@ -3,7 +3,7 @@ import sys
 
 from pymavlink import mavutil
 
-the_connection = mavutil.mavlink_connection('com3')
+the_connection = mavutil.mavlink_connection('com11')
 the_connection.wait_heartbeat()
 print(f"Heartbeat from system (system {the_connection.target_system} component {the_connection.target_component})")
 
@@ -13,10 +13,12 @@ the_connection.mav.param_request_list_send(target_system=the_connection.target_s
 param_list = []
 while True:
     # time.sleep(0.01)
-    if len(param_list) > 1000:
+    if len(param_list) > 1500:
         break
     try:
-        message = the_connection.recv_match(blocking=True).to_dict()
+        message: dict = the_connection.recv_match(blocking=True).to_dict()
+        for k in message.keys():
+            message[k] = str(message[k])
         print(f"{len(param_list)}-{message['mavpackettype']}-{message.get('param_id', '')}".ljust(50, '='))
         if message is None or message == {} or message == '':
             break
@@ -26,5 +28,5 @@ while True:
         print(error)
         sys.exit(0)
 
-with open('param_list.json', 'w', encoding='utf-8') as f:
+with open('param_list_px4.json', 'w', encoding='utf-8') as f:
     f.write(json.dumps(param_list, indent=4))

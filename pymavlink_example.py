@@ -10,7 +10,7 @@ from pymavlink import mavutil
 # 连接无人机的方式，下面是windows端口连接
 # mission planner的固件，端口是com3
 # qgroundcontrol的固件，端口是com16
-the_connection = mavutil.mavlink_connection('com3')
+the_connection = mavutil.mavlink_connection('com16')
 
 # 在发送接接受指令前，需要获得心跳信息
 the_connection.wait_heartbeat()
@@ -39,19 +39,21 @@ t_res = []
 run_num = 0  # 获取100次就停止获取，关闭程序
 while True:
     run_num += 1
-    if run_num > 100:
+    if run_num > 1000:
         break
     print('=' * 50)
     # 可以用下面的type，来指定获得特定type参数
     # msg = the_connection.recv_match(type='RAW_IMU', blocking=True)
-    msg = the_connection.recv_match(blocking=True).to_dict()
+    msg: dict = the_connection.recv_match(blocking=True).to_dict()
+    for k in msg.keys():
+        msg[k] = str(msg[k])
     print(msg)
     if msg['mavpackettype'] not in t_type:
         t_type.add(msg['mavpackettype'])
         t_res.append(msg)
 
 print(t_type)
-with open('t_type_res_1.json', 'w', encoding='utf-8') as f:
+with open('t_type_res_px4.json', 'w', encoding='utf-8') as f:
     f.write(json.dumps(t_res, ensure_ascii=False, indent=4))
 
 # 其他更多的例子：https://www.ardusub.com/developers/pymavlink.html
