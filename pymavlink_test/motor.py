@@ -1,3 +1,16 @@
+"""
+QGroundControl进行电机测试，是使用MAV_CMD_ACTUATOR_TEST进行的
+QGroundControl电机测试代码：
+https://github.com/mavlink/qgroundcontrol/tree/master/src/Vehicle/Actuators/ActuatorTesting.cc
+mavlink命令：
+https://mavlink.io/en/messages/common.html#MAV_CMD_ACTUATOR_TEST
+https://mavlink.io/en/messages/common.html#ACTUATOR_OUTPUT_FUNCTION_MOTOR1
+Actuator output function. Values greater or equal to 1000 are autopilot-specific.
+
+有些mavlink命令，pymavlink没有定义，例如MAV_CMD_ACTUATOR_TEST
+
+没有定义的命令，可以使用数字来代替，原因是pymavlink没有把全部的命令给映射为全局变量，导致不能使用
+"""
 from pymavlink import mavutil
 from pymavlink.dialects.v20 import ardupilotmega as mavlink
 
